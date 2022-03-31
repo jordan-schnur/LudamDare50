@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/ludamscene.obj-c4e1dd90fd98b55443eebf982df442dd.mesh"
+
+[deps]
+
+files=[ "res://.import/ludamscene.obj-c4e1dd90fd98b55443eebf982df442dd.mesh" ]
+
+source_file="res://art/models/ludamscene.obj"
+dest_files=[ "res://.import/ludamscene.obj-c4e1dd90fd98b55443eebf982df442dd.mesh", "res://.import/ludamscene.obj-c4e1dd90fd98b55443eebf982df442dd.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286
