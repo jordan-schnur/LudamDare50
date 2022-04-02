@@ -21,7 +21,8 @@ ambient_light_energy = 4.17
 fog_enabled = true
 fog_sun_color = Color( 0.411765, 0.411765, 0.411765, 1 )
 
-[node name="Player" type="KinematicBody"]
+[node name="Player" type="KinematicBody" groups=["player"]]
+collision_mask = 12
 script = ExtResource( 1 )
 speed = 5
 
