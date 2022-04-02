@@ -68,10 +68,7 @@ func _physics_process(delta):
 	var vx = sin(camera_rotation + PI)
 	var vz = cos(camera_rotation + PI)
 	#camera_rotation.x = 0
-	
-	print(vz)
 	if is_moving:
-		print("IS moving")
 		velocity.x = vx * speed
 		velocity.z = vz * speed
 	else:

@@ -9,12 +9,18 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node",
+"class": "AbstractItem",
+"language": "GDScript",
+"path": "res://items_classes/abstract_item.gd"
+}, {
 "base": "",
 "class": "GitAPI",
 "language": "NativeScript",
 "path": "res://addons/godot-git-plugin/git_api.gdns"
 } ]
 _global_script_class_icons={
+"AbstractItem": "",
 "GitAPI": ""
 }
 
@@ -23,6 +29,10 @@ _global_script_class_icons={
 config/name="LudamDare50"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+ItemFactory="*res://items_classes/ItemFactory.gd"
 
 [gdnative]
 
@@ -50,6 +60,13 @@ strafe_right={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
+
+[layer_names]
+
+3d_physics/layer_1="player"
+3d_physics/layer_2="enemy"
+3d_physics/layer_3="pickups"
+3d_physics/layer_4="ground"
 
 [physics]
 

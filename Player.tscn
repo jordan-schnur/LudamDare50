@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 
@@ -14,6 +14,12 @@ albedo_color = Color( 1, 0, 0, 1 )
 [sub_resource type="PrismMesh" id=4]
 material = SubResource( 3 )
 size = Vector3( 0.5, 0.5, 0.5 )
+
+[sub_resource type="Environment" id=5]
+ambient_light_color = Color( 0.105882, 0.105882, 0.105882, 1 )
+ambient_light_energy = 4.17
+fog_enabled = true
+fog_sun_color = Color( 0.411765, 0.411765, 0.411765, 1 )
 
 [node name="Player" type="KinematicBody"]
 script = ExtResource( 1 )
@@ -37,3 +43,4 @@ material/0 = null
 [node name="CameraPivot" type="Spatial" parent="."]
 
 [node name="Camera" type="Camera" parent="CameraPivot"]
+environment = SubResource( 5 )

@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://UiController.gd" type="Script" id=1]
+[ext_resource path="res://art/UiTheme.tres" type="Theme" id=4]
+[ext_resource path="res://ItemTextureRect.tscn" type="PackedScene" id=5]
+
+[node name="UserInterface" type="Control"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -250.0
+margin_top = -50.0
+margin_right = 250.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = ExtResource( 4 )
+script = ExtResource( 1 )
+ITEM_TEXTURE_RECT = ExtResource( 5 )
+
+[node name="GridContainer" type="GridContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -291.5
+margin_top = -56.0
+margin_right = 291.5
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+columns = 10
