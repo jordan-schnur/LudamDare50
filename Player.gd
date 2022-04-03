@@ -1,6 +1,11 @@
 extends KinematicBody
 
 signal player_moved(old_position, new_position, old_rotation, new_rotation)
+signal player_forward()
+signal player_backward()
+signal strafe_right()
+signal strafe_left()
+signal movement_stopped()
 
 export var speed = 14 #m/s
 export var gravity = 75 #m/s^2
@@ -22,7 +27,7 @@ func _ready():
 	$CameraPivot/Camera.translation = offset
 	$CameraPivot/Camera.look_at(translation + Vector3(0, player_height, 0), Vector3.UP)
 
-func _unhandled_input(event):
+func _input(event):
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		if event is InputEventMouseMotion:
 			$CameraPivot.rotate_y(-event.relative.x * mouse_sensitivity)
@@ -40,8 +45,6 @@ func _unhandled_input(event):
 			offset.y = cos(rotx) * camera_distance
 			$CameraPivot/Camera.translation = offset
 			$CameraPivot/Camera.look_at(translation + Vector3(0, player_height, 0), Vector3.UP)
-			
-				
 
 
 func _physics_process(delta):
@@ -49,32 +52,47 @@ func _physics_process(delta):
 	var old_rot = rotation
 	
 	var direction = Vector3.ZERO
+	var offset = 0
 	var is_moving = false
-	if Input.is_action_pressed("move_forward"):
-		direction.z += 1
-	if Input.is_action_pressed("move_back"):
-		direction.z -= 1
+	
 	if Input.is_action_pressed("strafe_left"):
 		direction.x -= 1
-	if Input.is_action_pressed("strafe_right"):
+		offset = PI / 2
+		emit_signal("strafe_left")
+	elif Input.is_action_pressed("strafe_right"):
 		direction.x += 1
+		offset = -PI / 2
+		emit_signal("strafe_right")
+	elif Input.is_action_pressed("move_forward"):
+		direction.z += 1
+		emit_signal("player_forward")
+	elif Input.is_action_pressed("move_back"):
+		direction.z -= 1
+		offset = -PI
+		emit_signal("player_backward")
 	
 	if direction != Vector3.ZERO:
 		direction = direction.normalized()
 		is_moving = true
+		
 
 	var camera_rotation = $CameraPivot.rotation.y
-	$Model.rotation.y = camera_rotation
-	var vx = sin(camera_rotation + PI)
-	var vz = cos(camera_rotation + PI)
+	$Pivot.rotation.y = camera_rotation
+	var vx = sin(camera_rotation + PI + offset)
+	var vz = cos(camera_rotation + PI + offset)
 	#camera_rotation.x = 0
 	if is_moving:
 		velocity.x = vx * speed
 		velocity.z = vz * speed
 	else:
+		emit_signal("movement_stopped")
 		velocity.x = 0
 		velocity.z = 0
 	velocity.y -= gravity * delta
 	
 	var velocity2 = move_and_slide(velocity, Vector3.UP)
 	emit_signal("player_moved", old_pos, translation, old_rot, rotation)
+
+
+func _on_Player_player_backward():
+	pass # Replace with function body.

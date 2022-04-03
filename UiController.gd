@@ -16,7 +16,11 @@ func _ready():
 		texRect.name = item.name + "Slot"
 		texRect.get_node("ItemCount").text = str(item.count)
 		texRect.hint_tooltip = item.name
-		$GridContainer.add_child(texRect)
+		$Inventory.add_child(texRect)
 		
 func _on_Inventory_Changed(item_id, new_count):
 	itemIdsToUIs[item_id].get_node("ItemCount").text = str(new_count)
+
+
+func _on_Main_enemy_timer_changed(time):
+	$InGameUI/MonsterLabel.text = "You have %s seconds to prepare before the monster comes!" % time
