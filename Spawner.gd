@@ -6,7 +6,7 @@ export (NodePath) var spawnPath
 
 func _ready():
 	for i in range(0, spawnAmount-1):
-		var rand = int(round(rand_range(0, itemScenes.size())))
+		var rand = int(round(rand_range(0, itemScenes.size()-1)))
 		var item = itemScenes[rand].instance()
 		
 		var path = get_node(spawnPath)

@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Enemy.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Main.gd" type="Script" id=3]
+[ext_resource path="res://item_scenes/SharpStick.tscn" type="PackedScene" id=4]
 [ext_resource path="res://ui.tscn" type="PackedScene" id=5]
+[ext_resource path="res://item_scenes/ExplodeToad.tscn" type="PackedScene" id=6]
 [ext_resource path="res://ItemSpawner.tscn" type="PackedScene" id=7]
 
 [sub_resource type="CubeMesh" id=1]
@@ -30,12 +32,31 @@ geometry/collision_mask = 4294967280
 geometry/source_geometry_mode = 1
 geometry/source_group_name = "navmesh"
 
+[sub_resource type="ConvexPolygonShape" id=6]
+points = PoolVector3Array( 50.3448, 1.41379, 50.3448, -50.3448, -1.34483, -50.3448, -50.3448, -1.34483, 50.3448, -50.3448, 1.41379, -50.3448, 50.3448, -1.34483, -50.3448, -50.3448, 1.41379, 50.3448, 50.3448, -1.34483, 50.3448, 50.3448, 1.41379, -50.3448 )
+
+[sub_resource type="ConvexPolygonShape" id=7]
+points = PoolVector3Array( 50.3448, 1.41379, 50.3448, -50.3448, -1.34483, -50.3448, -50.3448, -1.34483, 50.3448, -50.3448, 1.41379, -50.3448, 50.3448, -1.34483, -50.3448, -50.3448, 1.41379, 50.3448, 50.3448, -1.34483, 50.3448, 50.3448, 1.41379, -50.3448 )
+
+[sub_resource type="ConvexPolygonShape" id=8]
+points = PoolVector3Array( 50.3448, 1.41379, 50.3448, -50.3448, -1.34483, -50.3448, -50.3448, -1.34483, 50.3448, -50.3448, 1.41379, -50.3448, 50.3448, -1.34483, -50.3448, -50.3448, 1.41379, 50.3448, 50.3448, -1.34483, 50.3448, 50.3448, 1.41379, -50.3448 )
+
+[sub_resource type="ConvexPolygonShape" id=9]
+points = PoolVector3Array( 50.3448, 1.41379, 50.3448, -50.3448, -1.34483, -50.3448, -50.3448, -1.34483, 50.3448, -50.3448, 1.41379, -50.3448, 50.3448, -1.34483, -50.3448, -50.3448, 1.41379, 50.3448, 50.3448, -1.34483, 50.3448, 50.3448, 1.41379, -50.3448 )
+
+[sub_resource type="ConvexPolygonShape" id=10]
+points = PoolVector3Array( 50.3448, 1.41379, 50.3448, -50.3448, -1.34483, -50.3448, -50.3448, -1.34483, 50.3448, -50.3448, 1.41379, -50.3448, 50.3448, -1.34483, -50.3448, -50.3448, 1.41379, 50.3448, 50.3448, -1.34483, 50.3448, 50.3448, 1.41379, -50.3448 )
+
 [node name="Main" type="Spatial"]
 script = ExtResource( 3 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.33959, 4.56245, -5.32368 )
 speed = 10
+camera_distance = 4
+throwable_container = NodePath("../ThrowableContainer")
+enemy = NodePath("../Enemy")
+throwables = [ ExtResource( 4 ), ExtResource( 6 ) ]
 
 [node name="BakedLightmap" type="BakedLightmap" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 1, 0 )
@@ -67,9 +88,8 @@ material/0 = SubResource( 2 )
 shape = SubResource( 3 )
 
 [node name="EnemySpawnTimer" type="Timer" parent="."]
-wait_time = 60.0
+wait_time = 15.0
 one_shot = true
-autostart = true
 
 [node name="Heartbeat" type="Timer" parent="."]
 autostart = true
@@ -81,6 +101,7 @@ curve = SubResource( 4 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -48.9838, 0, -47.6759 )
 
 [node name="ItemSpawner" parent="." instance=ExtResource( 7 )]
+spawnAmount = 100
 spawnPath = NodePath("../Path/PathFollow")
 
 [node name="Navigation" type="Navigation" parent="."]
@@ -89,9 +110,10 @@ spawnPath = NodePath("../Path/PathFollow")
 navmesh = SubResource( 5 )
 
 [node name="Enemy" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1.00233, 0, 0, 0, 1.00233, 0, 0, 0, 1.00233, 0, 11.752, 0 )
-speed = 5
+transform = Transform( 1.00233, 0, 0, 0, 1.00233, 0, 0, 0, 1.00233, 0, 1.89976, -17.5095 )
+speed = 12
 drawPath = NodePath("../Draw")
+pulse_container = NodePath("../PulseContainer")
 
 [node name="Draw" type="ImmediateGeometry" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
@@ -117,18 +139,26 @@ collision_mask = 15
 mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 
+[node name="CollisionShape" type="CollisionShape" parent="TestFloor3"]
+shape = SubResource( 6 )
+
 [node name="Mesh2" type="MeshInstance" parent="TestFloor3"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.62939e-06, 0, -1713.12 )
 mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
+
+[node name="CollisionShape2" type="CollisionShape" parent="TestFloor3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.62939e-06, 0, -1713.12 )
+shape = SubResource( 7 )
 
 [node name="Mesh3" type="MeshInstance" parent="TestFloor3"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.52588e-05, 0, -1713.12 )
 mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 
-[node name="CollisionShape" type="CollisionShape" parent="TestFloor3"]
-shape = SubResource( 3 )
+[node name="CollisionShape3" type="CollisionShape" parent="TestFloor3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.52588e-05, 0, -1713.12 )
+shape = SubResource( 8 )
 
 [node name="TestFloor4" type="StaticBody" parent="." groups=["navmesh"]]
 transform = Transform( -0.144015, 0, 8.28695e-10, 0, 1.842, 0, -3.49231e-08, 0, -0.0262937, -15.3439, 3.32171, 21.8411 )
@@ -166,8 +196,8 @@ mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 
 [node name="CollisionShape" type="CollisionShape" parent="TestFloor6"]
-transform = Transform( 1, -6.59202e-09, 0, -1.56035e-11, 1, 0, -1.86265e-09, -3.72529e-09, 1, 0, 0, 0 )
-shape = SubResource( 3 )
+transform = Transform( 1.4948, 0.0313792, 0.000396233, 0.000191812, 1.00001, 1.53593e-07, 0.0118862, 0.000753812, 1.00001, -24.4777, -0.00948882, -0.588013 )
+shape = SubResource( 9 )
 
 [node name="TestFloor7" type="StaticBody" parent="." groups=["navmesh"]]
 transform = Transform( -0.290497, -0.0184226, -0.000232627, -0.00071444, 1.84198, 1.63042e-05, 0.000631162, 0.00118225, -0.0262934, 8.11243, 3.42916, 42.395 )
@@ -180,10 +210,27 @@ mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 
 [node name="CollisionShape" type="CollisionShape" parent="TestFloor7"]
-transform = Transform( 1.68303, 0.043316, 0.000546962, 0.000264779, 1.00002, 2.1202e-07, 0.0164077, 0.00104057, 1.00001, 56.4625, 0.0210402, 97.1029 )
-shape = SubResource( 3 )
+transform = Transform( 1.61562, 0.0390411, 0.000492983, 0.000238648, 1.00001, 1.91099e-07, 0.0147884, 0.000937894, 1.00001, 51.8036, 0.0192834, 91.4493 )
+shape = SubResource( 10 )
 
+[node name="ThrowableContainer" type="Spatial" parent="."]
+
+[node name="PulseContainer" type="Spatial" parent="."]
+
+[connection signal="enemy_spawned" from="." to="Control" method="_on_Main_enemy_spawned"]
 [connection signal="enemy_timer_changed" from="." to="Control" method="_on_Main_enemy_timer_changed"]
+[connection signal="game_end" from="." to="Player" method="_on_Main_game_end"]
+[connection signal="game_end" from="." to="Control" method="_on_Main_game_end"]
+[connection signal="game_end" from="." to="Enemy" method="_on_Main_game_end"]
+[connection signal="game_start" from="." to="Player" method="_on_Main_game_start"]
+[connection signal="game_start" from="." to="Control" method="_on_Main_game_start"]
+[connection signal="player_damaged" from="." to="Control" method="_on_Main_player_damaged"]
+[connection signal="score_changed" from="." to="Control" method="_on_Main_score_changed"]
+[connection signal="health_changed" from="Player" to="." method="_on_Player_health_changed"]
+[connection signal="player_died" from="Player" to="." method="_on_Player_player_died"]
 [connection signal="player_moved" from="Player" to="." method="_on_Player_player_moved"]
+[connection signal="restart_game_please" from="Control" to="." method="_on_Control_restart_game_please"]
+[connection signal="start_game_please" from="Control" to="." method="_on_Control_start_game_please"]
 [connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_EnemySpawnTimer_timeout"]
 [connection signal="timeout" from="Heartbeat" to="." method="_on_Heartbeat_timeout"]
+[connection signal="hit_player" from="Enemy" to="Player" method="_on_Enemy_hit_player"]

@@ -1,17 +1,15 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Spawner.gd" type="Script" id=1]
 [ext_resource path="res://items_classes/RedTear.tscn" type="PackedScene" id=2]
 [ext_resource path="res://items_classes/Vial.tscn" type="PackedScene" id=3]
 [ext_resource path="res://items_classes/Rock.tscn" type="PackedScene" id=4]
-[ext_resource path="res://items_classes/SpiderEye.tscn" type="PackedScene" id=5]
 [ext_resource path="res://items_classes/Stick.tscn" type="PackedScene" id=6]
 [ext_resource path="res://items_classes/Toad.tscn" type="PackedScene" id=7]
-[ext_resource path="res://items_classes/WillowBark.tscn" type="PackedScene" id=8]
 [ext_resource path="res://items_classes/YellowTear.tscn" type="PackedScene" id=9]
 [ext_resource path="res://items_classes/BlueTear.tscn" type="PackedScene" id=10]
 [ext_resource path="res://items_classes/GreenTear.tscn" type="PackedScene" id=11]
 
 [node name="ItemSpawner" type="Node"]
 script = ExtResource( 1 )
-itemScenes = [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 2 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 3 ), ExtResource( 8 ), ExtResource( 9 ) ]
+itemScenes = [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 2 ), ExtResource( 4 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 3 ), ExtResource( 9 ) ]

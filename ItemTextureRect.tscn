@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://art/fonts/scary.TTF" type="DynamicFontData" id=1]
 [ext_resource path="res://art/UiTheme.tres" type="Theme" id=2]
@@ -9,9 +9,37 @@ size = 24
 use_mipmaps = true
 font_data = ExtResource( 1 )
 
+[sub_resource type="StyleBoxFlat" id=2]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color( 0.85098, 1, 0, 1 )
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id=3]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color( 0.0627451, 0.0627451, 0.0627451, 1 )
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_size = 3
+
 [node name="Item" type="TextureRect"]
 margin_right = 54.0
 margin_bottom = 56.0
+rect_clip_content = true
 hint_tooltip = "Rock"
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -35,3 +63,16 @@ custom_fonts/font = SubResource( 1 )
 text = "0"
 align = 2
 valign = 2
+
+[node name="Selected" type="Panel" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 2 )
+
+[node name="Outline" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 3 )

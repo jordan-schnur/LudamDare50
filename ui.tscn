@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://UiController.gd" type="Script" id=1]
 [ext_resource path="res://art/fonts/ScarySign.ttf" type="DynamicFontData" id=2]
@@ -15,6 +15,9 @@ default_font = SubResource( 1 )
 size = 28
 font_data = ExtResource( 2 )
 
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.12549, 0.12549, 0.12549, 0.709804 )
+
 [node name="UserInterface" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -24,26 +27,40 @@ theme = SubResource( 2 )
 script = ExtResource( 1 )
 ITEM_TEXTURE_RECT = ExtResource( 5 )
 
-[node name="MainMenu" parent="." instance=ExtResource( 3 )]
-
 [node name="Inventory" type="GridContainer" parent="."]
 anchor_left = 0.5
 anchor_top = 0.75
 anchor_right = 0.5
 anchor_bottom = 0.75
-margin_left = -291.5
-margin_top = 50.0
-margin_right = 291.5
-margin_bottom = 100.0
+margin_left = -291.0
+margin_top = 74.0
+margin_right = 292.0
+margin_bottom = 124.0
 grow_horizontal = 2
 grow_vertical = 0
+rect_pivot_offset = Vector2( -918.5, -599 )
+size_flags_horizontal = 2
+size_flags_vertical = 2
+columns = 10
+
+[node name="Craftables" type="GridContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.75
+anchor_right = 0.5
+anchor_bottom = 0.75
+margin_left = -290.0
+margin_right = 291.5
+margin_bottom = 50.0
+rect_pivot_offset = Vector2( -918.5, -599 )
 size_flags_horizontal = 2
 size_flags_vertical = 2
 columns = 10
 
 [node name="InGameUI" type="Control" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 
 [node name="Score" type="Label" parent="InGameUI"]
 visible = false
@@ -59,7 +76,7 @@ margin_left = 26.0
 margin_top = 48.0
 margin_right = 98.0
 margin_bottom = 65.0
-text = "Timer Surived: 0"
+text = "Time Surived: 0"
 
 [node name="MonsterLabel" type="Label" parent="InGameUI"]
 anchor_left = 0.5
@@ -71,3 +88,73 @@ margin_bottom = 17.0
 custom_fonts/font = SubResource( 3 )
 text = "You have 60 seconds to prepare before the monster comes"
 align = 1
+
+[node name="Health" type="Label" parent="InGameUI"]
+visible = false
+margin_left = 28.0
+margin_top = 70.0
+margin_right = 158.0
+margin_bottom = 87.0
+text = "Health: 3/3"
+
+[node name="GameOver" type="Control" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="GameOver"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 4 )
+
+[node name="MonsterLabel" type="Label" parent="GameOver"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -512.0
+margin_top = 30.0
+margin_right = 512.0
+margin_bottom = 17.0
+custom_fonts/font = SubResource( 3 )
+text = "YOU DIED"
+align = 1
+
+[node name="TimeSurvived" type="Label" parent="GameOver"]
+anchor_right = 1.0
+margin_left = -2.0
+margin_top = 67.0
+margin_right = -2.0
+margin_bottom = 84.0
+text = "You surivied 10 seconds and had a score of 80 points.  "
+align = 1
+
+[node name="RestartButton" type="Button" parent="GameOver"]
+margin_left = 33.0
+margin_top = 382.0
+margin_right = 409.0
+margin_bottom = 492.0
+text = "RESTART GAME"
+
+[node name="Quit" type="Button" parent="GameOver"]
+margin_left = 591.0
+margin_top = 385.0
+margin_right = 991.0
+margin_bottom = 493.0
+text = "QUIT GAME"
+
+[node name="MainMenu" parent="." instance=ExtResource( 3 )]
+visible = false
+mouse_filter = 2
+
+[node name="Panel" parent="MainMenu" index="0"]
+mouse_filter = 2
+
+[node name="GameTimer" type="Timer" parent="."]
+
+[connection signal="pressed" from="GameOver/RestartButton" to="." method="_on_RestartButton_pressed"]
+[connection signal="pressed" from="GameOver/Quit" to="." method="_on_Quit_pressed"]
+[connection signal="start_game_pressed" from="MainMenu" to="." method="_on_MainMenu_start_game_pressed"]
+[connection signal="timeout" from="GameTimer" to="." method="_on_GameTimer_timeout"]
+
+[editable path="MainMenu"]
