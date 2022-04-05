@@ -243,6 +243,7 @@ radius = 0.400333
 height = 1.31574
 
 [node name="YellowTear" type="KinematicBody" groups=["pickup"]]
+collision_layer = 4
 script = ExtResource( 1 )
 bob_height = 0.15
 item_id = 6

@@ -28,6 +28,8 @@ func _physics_process(delta):
 			$PulseTimer.start(rand_range(2, 4))
 
 func _on_PulseTimer_timeout():
+	if !player_found:
+		emit_signal("player_found")
 	emit_signal("pulse_finished")
 	queue_free()
 

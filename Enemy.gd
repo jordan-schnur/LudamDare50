@@ -51,8 +51,8 @@ func enemy_pulse(live_time, radius):
 	current_state = STATE.PULSE
 	var pulse = pulseScene.instance()
 	can_pulse = false
-	pulse.translation = to_global(translation) + Vector3(0, 1, 0)
 	get_node(pulse_container).add_child(pulse)
+	pulse.translation = to_global(translation) + Vector3(0, 1, 0)
 	pulse.connect("player_found", self, "_on_Pulse_PlayerFound")
 	pulse.connect("pulse_finished", self, "_on_Pulse_Finished")
 	pulse.start(live_time, radius, player)
@@ -62,8 +62,11 @@ func pause_all_tracks():
 	
 func start_roar():
 	$Roar.play()
-	
-	
+
+func _input(event):
+	if Input.is_action_just_pressed("debug"):
+		debug_mode = !debug_mode	
+
 var last_state = current_state
 func _physics_process(delta):
 	if current_state != last_state:

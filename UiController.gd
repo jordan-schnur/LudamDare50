@@ -242,7 +242,7 @@ func _on_RestartButton_pressed():
 	emit_signal("restart_game_please")
 
 func _on_Main_player_damaged(new_health, max_health):
-	$InGameUI/Health.text = "Health: "+ str(new_health)
+	$InGameUI/Health.text = "Health: " + str(new_health)
 
 
 func _on_Enemy_state_changed(new_state):

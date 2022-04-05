@@ -79,7 +79,6 @@ func init_game():
 func _on_Player_health_changed(new_health):
 	emit_signal("player_damaged", new_health, $Player.max_health)
 
-
 func _on_Player_player_died():
 	$Enemy.current_state = $Enemy.STATE.PLAYER_DEAD
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
