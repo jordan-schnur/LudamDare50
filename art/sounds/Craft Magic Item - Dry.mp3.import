@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Craft Magic Item - Dry.mp3-3d05a579e4a6a2cb9bba5577f6d906d0.mp3str"
+
+[deps]
+
+source_file="res://art/sounds/Craft Magic Item - Dry.mp3"
+dest_files=[ "res://.import/Craft Magic Item - Dry.mp3-3d05a579e4a6a2cb9bba5577f6d906d0.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

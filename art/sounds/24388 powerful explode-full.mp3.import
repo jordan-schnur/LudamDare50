@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/24388 powerful explode-full.mp3-f6daa725a2a7cac5b44ecf273d188c4c.mp3str"
+
+[deps]
+
+source_file="res://art/sounds/24388 powerful explode-full.mp3"
+dest_files=[ "res://.import/24388 powerful explode-full.mp3-f6daa725a2a7cac5b44ecf273d188c4c.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

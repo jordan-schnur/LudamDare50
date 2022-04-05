@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Rope Throw .mp3-bf8a01aa4bd8667032cb6e9f94edfb29.mp3str"
+
+[deps]
+
+source_file="res://art/sounds/Rope Throw .mp3"
+dest_files=[ "res://.import/Rope Throw .mp3-bf8a01aa4bd8667032cb6e9f94edfb29.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

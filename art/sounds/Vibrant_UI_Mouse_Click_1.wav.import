@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Vibrant_UI_Mouse_Click_1.wav-999265d79fd8be3aa5476e3d36d752bc.sample"
+
+[deps]
+
+source_file="res://art/sounds/Vibrant_UI_Mouse_Click_1.wav"
+dest_files=[ "res://.import/Vibrant_UI_Mouse_Click_1.wav-999265d79fd8be3aa5476e3d36d752bc.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

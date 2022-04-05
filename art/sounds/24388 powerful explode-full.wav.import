@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/24388 powerful explode-full.wav-3d36f95aa9fb52eaa1692c78dfae4e8b.sample"
+
+[deps]
+
+source_file="res://art/sounds/24388 powerful explode-full.wav"
+dest_files=[ "res://.import/24388 powerful explode-full.wav-3d36f95aa9fb52eaa1692c78dfae4e8b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

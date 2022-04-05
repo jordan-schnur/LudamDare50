@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Drink Potion 8.mp3-4bbb48d585efb1595438c2fd50b86229.mp3str"
+
+[deps]
+
+source_file="res://art/sounds/Drink Potion 8.mp3"
+dest_files=[ "res://.import/Drink Potion 8.mp3-4bbb48d585efb1595438c2fd50b86229.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

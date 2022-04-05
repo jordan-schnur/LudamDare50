@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Craft Magic Item - Short Reverb.wav-c5224e58b5eb4c0cfc47380e2e80d6f3.sample"
+
+[deps]
+
+source_file="res://art/sounds/Craft Magic Item - Short Reverb.wav"
+dest_files=[ "res://.import/Craft Magic Item - Short Reverb.wav-c5224e58b5eb4c0cfc47380e2e80d6f3.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

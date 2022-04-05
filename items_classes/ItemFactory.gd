@@ -1,6 +1,7 @@
 extends Node
 signal inventory_changed(item_id, new_count)
 signal item_used(item_id)
+signal item_added(item_id)
 
 const ITEM = {
 	ROCK = 0,
@@ -26,7 +27,9 @@ var craftables: Dictionary
 
 func _ready():
 	print("ItemFactory Ready")
-	createItem(ITEM.ROCK, "Rock", 0, null, null)
+	randomize()
+	
+	createItem(ITEM.ROCK, "Rock", 0, null, "Rock.png")
 	createItem(ITEM.STICK, "Stick", 0, null, "Sticks.png")
 	createItem(ITEM.TOAD, "Toad", 0, null, "ToadBasic.png")
 	createItem(ITEM.VIAL, "Vial", 0, null, "VialEmpty.png")
@@ -59,6 +62,7 @@ func createItem(id, name, count, crafting_materials_ids, resource_location):
 func addItemToInventory(ID, count):
 	inventory[ID].count += count
 	emit_signal("inventory_changed", ID, inventory[ID].count)
+	emit_signal("item_added", ID)
 
 func remoteItemFromInventory(ID, count):
 	inventory[ID].count -= count
@@ -66,7 +70,7 @@ func remoteItemFromInventory(ID, count):
 	
 func emptyInventory():
 	for key in inventory:
-		ItemFactory.inventory[key].count = 10
+		ItemFactory.inventory[key].count = 0
 		emit_signal("inventory_changed", inventory[key].id, ItemFactory.inventory[key].count)
 		
 func tryToCraftItem(ID):

@@ -16,6 +16,7 @@ var survied_time = 0
 func _ready():
 	#Connect to inventory changed signal in singleton
 	get_node("/root/ItemFactory").connect("inventory_changed", self, "_on_Inventory_Changed")
+	get_node("/root/ItemFactory").connect("item_added", self, "_on_Inventory_Added")
 	
 	print("UI Ready")
 	for key in ItemFactory.inventory:
@@ -43,7 +44,7 @@ func _ready():
 			$Craftables.add_child(texRect)
 	
 	#Remove this
-	_on_MainMenu_start_game_pressed()
+	#_on_MainMenu_start_game_pressed()
 	
 func updateSelection():
 	var visible_count = 0
@@ -90,6 +91,7 @@ func _input(event):
 				visible[key] = craftables[key]
 				visible_count += 1
 		if visible_count > 1:
+			$UINavSound.play()
 			var old_selected = current_selected
 			var old_index
 			var i = 0
@@ -119,6 +121,7 @@ func _input(event):
 				visible[key] = craftables[key]
 				visible_count += 1
 		if visible_count > 1:
+			$UINavSound.play()
 			var old_selected = current_selected
 			var old_index
 			var i = 0
@@ -141,9 +144,13 @@ func _input(event):
 			current_selected_index = new_index
 			visible[current_selected].selected.show()
 	if Input.is_action_just_pressed("craft_item") and current_selected != -1:
-		ItemFactory.tryToCraftItem(current_selected)
+		var success = ItemFactory.tryToCraftItem(current_selected)
+		if success:
+			$CraftSound.play()
 	if Input.is_action_just_released("use_item") and current_selected != -1:
 		ItemFactory.useItem(current_selected)
+	if Input.is_action_just_pressed("debug"):
+		$StateLabel.visible = !$StateLabel.visible
 		
 		
 func _on_Inventory_Changed(item_id, new_count):
@@ -183,7 +190,9 @@ func _on_Main_enemy_spawned():
 	$GameTimer.start(1)
 
 func _on_Main_game_start(max_health):
-	$InGameUI/Health.text = "Health: %s/%s" % max_health
+	$InGameUI/Health.text = "Health: %s" % max_health
+	$Inventory.show()
+	$Craftables.show()
 
 func _on_GameTimer_timeout():
 	survied_time += 1
@@ -196,6 +205,7 @@ func _on_Main_game_end():
 	
 	$Inventory.hide()
 	$InGameUI.hide()
+	$Craftables.hide()
 	$GameOver.show()
 
 
@@ -211,6 +221,7 @@ func _on_MainMenu_start_game_pressed():
 func init_ui():
 	$MainMenu.hide()
 	$Inventory.show()
+	$Craftables.show()
 	$InGameUI.show()
 	$InGameUI/Score.show()
 	$InGameUI/TimeSurvived.show()
@@ -231,4 +242,11 @@ func _on_RestartButton_pressed():
 	emit_signal("restart_game_please")
 
 func _on_Main_player_damaged(new_health, max_health):
-	$InGameUI/Health.text = "Health: "+ str(new_health) +"/" + str(max_health)
+	$InGameUI/Health.text = "Health: "+ str(new_health)
+
+
+func _on_Enemy_state_changed(new_state):
+	$StateLabel.text = "Enemy State: %s" % new_state
+	
+func _on_Inventory_Added(ID):
+	$ItemAddedSound.play()

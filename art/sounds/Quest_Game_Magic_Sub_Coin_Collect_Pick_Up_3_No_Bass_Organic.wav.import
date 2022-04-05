@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Quest_Game_Magic_Sub_Coin_Collect_Pick_Up_3_No_Bass_Organic.wav-2c376c1db43f5a977cd51f410510d2b3.sample"
+
+[deps]
+
+source_file="res://art/sounds/Quest_Game_Magic_Sub_Coin_Collect_Pick_Up_3_No_Bass_Organic.wav"
+dest_files=[ "res://.import/Quest_Game_Magic_Sub_Coin_Collect_Pick_Up_3_No_Bass_Organic.wav-2c376c1db43f5a977cd51f410510d2b3.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

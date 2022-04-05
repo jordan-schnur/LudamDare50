@@ -1,13 +1,14 @@
 extends KinematicBody
 
 signal hit_player()
+signal state_changed(new_state)
 
 export var speed = 14 #m/s
 export var gravity = 75 #m/s^2
 export var player_height = 2
 export var hit_distance = 3
 export var escape_time = 2 * 1000
-export var debug_mode = true
+export var debug_mode = false
 export (NodePath) var drawPath
 export (PackedScene) var pulseScene
 export (NodePath) var pulse_container
@@ -46,14 +47,21 @@ func init_enemy(plr, nav):
 	#enemy_pulse(10, 30)
 	
 func enemy_pulse(live_time, radius):
+	print("Enemy Pulsing")
 	current_state = STATE.PULSE
 	var pulse = pulseScene.instance()
 	can_pulse = false
-	pulse.translation = Vector3(0, 1, 0)
+	pulse.translation = to_global(translation) + Vector3(0, 1, 0)
 	get_node(pulse_container).add_child(pulse)
 	pulse.connect("player_found", self, "_on_Pulse_PlayerFound")
 	pulse.connect("pulse_finished", self, "_on_Pulse_Finished")
 	pulse.start(live_time, radius, player)
+	
+func pause_all_tracks():
+	$Stomping.stop()
+	
+func start_roar():
+	$Roar.play()
 	
 	
 var last_state = current_state
@@ -61,9 +69,24 @@ func _physics_process(delta):
 	if current_state != last_state:
 		last_state = current_state
 		
+		var str_state = ""
+		if current_state == STATE.CHASE:
+			str_state = "Chasing"
+		elif current_state == STATE.DOWN:
+			str_state = "Down"
+		elif current_state == STATE.IDLE:
+			str_state = "Idling"
+		elif current_state == STATE.PLAYER_DEAD:
+			str_state = "Player Dead"
+		elif current_state == STATE.PULSE:
+			str_state = "Pulsing"
+			
+		emit_signal("state_changed", str_state)
+		
 		if current_state == STATE.CHASE:
 			last_player_seen_time = OS.get_ticks_msec()
 			$AnimationPlayer.play("RunningForward")
+			$Stomping.play()
 		elif current_state == STATE.IDLE:
 			$AnimationPlayer.play("IdleBreathing")
 		elif current_state == STATE.PULSE:
@@ -121,15 +144,15 @@ func _physics_process(delta):
 	velocity = move_and_slide(velocity, Vector3.UP)
 	
 func _on_PulseAnimationCallback():
-	enemy_pulse(12, 75)
+	enemy_pulse(15, 400)
+	$PulseStartSound.play()
 
 func get_active_node():
 	if current_path.size() != 0 and current_state == STATE.CHASE:
 		var active_node = current_path[current_node]
 		if translation.distance_to(active_node) < node_increment_distance:
 			if current_node + 1 == current_path.size():
-				current_state = STATE.IDLE
-				$IdleResetTImer.start(5)
+				idle()
 				velocity.x = 0
 				velocity.y = 0
 				return active_node
@@ -150,6 +173,7 @@ func chase():
 
 func idle():
 	current_state = STATE.IDLE
+	$IdleTimer.start()
 		
 func draw_path(path_array):
 	var im = get_node(drawPath)
@@ -169,7 +193,9 @@ func _on_HitRefreshTImer_timeout():
 	can_hit = true
 
 func _on_Main_game_end():
+	print("player dead")
 	current_state = STATE.PLAYER_DEAD
+	pause_all_tracks()
 
 #func _on_IdleResetTImer_timeout():
 	#if current_state != STATE.PLAYER_DEAD:	
@@ -204,3 +230,13 @@ func _on_ToadExplodeHit():
 	current_state = STATE.DOWN
 	$AnimationPlayer.play("KnockedOver")
 	$AnimationPlayer.queue("GettingUp")
+
+
+func _on_IdleTimer_timeout():
+	chase()
+
+
+func _on_Player_start_enemy_pulse():
+	print("OnEnemyPulse")
+	can_pulse = true
+	current_state = STATE.PULSE

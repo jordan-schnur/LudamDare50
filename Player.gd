@@ -8,6 +8,7 @@ signal strafe_left()
 signal movement_stopped()
 signal health_changed(new_health)
 signal player_died()
+signal start_enemy_pulse()
 
 export var speed = 14 #m/s
 export var gravity = 75 #m/s^2
@@ -24,6 +25,7 @@ var velocity = Vector3.ZERO
 var rotx = 0
 var has_camera_control = false
 var throwable_map = {}
+var default_speed = speed
 
 func _ready():
 	#var offset = (-new_rotation.normalized()) * camera_distance
@@ -48,10 +50,10 @@ func _input(event):
 			$CameraPivot.rotate_y(-event.relative.x * mouse_sensitivity)
 			
 			var xOffset = (-event.relative.y * mouse_sensitivity)
-			if rotx + xOffset > PI:
-				rotx = PI - 0.0174533
-			elif rotx + xOffset < 0:
-				rotx = 0
+			if rotx + xOffset > PI/2:
+				rotx = PI/2
+			elif rotx + xOffset < PI/6:
+				rotx = PI/6
 			else:
 				rotx += xOffset
 			#$CameraPivot.rotation.x = rotx - $CameraPivot/Camera.rotation.x
@@ -61,7 +63,7 @@ func _input(event):
 			$CameraPivot/Camera.translation = offset
 			$CameraPivot/Camera.look_at(translation + Vector3(0, player_height, 0), Vector3.UP)
 
-
+var throwable_multiplier = 1
 func _physics_process(delta):
 	var old_pos = translation
 	var old_rot = rotation
@@ -74,15 +76,19 @@ func _physics_process(delta):
 		if Input.is_action_pressed("strafe_left"):
 			direction.x -= 1
 			offset = PI / 2
+			throwable_multiplier = 1
 			emit_signal("strafe_left")
 		elif Input.is_action_pressed("strafe_right"):
 			direction.x += 1
 			offset = -PI / 2
+			throwable_multiplier = 1
 			emit_signal("strafe_right")
 		elif Input.is_action_pressed("move_forward"):
 			direction.z += 1
+			throwable_multiplier = 1
 			emit_signal("player_forward")
 		elif Input.is_action_pressed("move_back"):
+			throwable_multiplier = -1
 			direction.z -= 1
 			offset = -PI
 			emit_signal("player_backward")
@@ -100,7 +106,11 @@ func _physics_process(delta):
 		if is_moving:
 			velocity.x = vx * speed
 			velocity.z = vz * speed
+			if !$RunningSound.playing:
+				$RunningSound.play()
 		else:
+			if $RunningSound.playing:
+				$RunningSound.stop()
 			emit_signal("movement_stopped")
 			velocity.x = 0
 			velocity.z = 0
@@ -126,14 +136,14 @@ func _on_Enemy_hit_player():
 
 
 func _on_Main_game_start():
+	$CameraPivot/Camera.make_current()
 	has_camera_control = true
 	
 func _on_ItemFactor_ItemUsed(ID):
 	for key in throwable_map:
 		if (key == ID):
 			
-			var instance: RigidBody
-			instance = throwable_map[key].instance()
+			var instance = throwable_map[key].instance()
 			
 			if ID == ItemFactory.ITEM.POINTY_STICK:
 				instance.translation = translation + Vector3(0, 1, 0)
@@ -142,12 +152,17 @@ func _on_ItemFactor_ItemUsed(ID):
 				get_node(throwable_container).add_child(instance)
 				var camera_rotation = $CameraPivot.rotation.y
 				$Pivot.rotation.y = camera_rotation
+				
+					
 				var vx = sin(camera_rotation + PI)
 				var vz = cos(camera_rotation + PI)
+				
 				var impulse = 6
 				instance.connect("sharp_stick_hit", get_node(enemy), "_on_SharpStick_hit")
+				instance.start_throw(Vector3(vx, 0, vz))
+				$ThrowSound.play()
 				#TODO: Add curve path, add impuse when running
-				instance.apply_central_impulse(Vector3(vx * impulse, impulse, vz * impulse))
+				#instance.apply_central_impulse(Vector3(vx * impulse, impulse, vz * impulse))
 			elif ID == ItemFactory.ITEM.EXPLODER_TOAD:
 				instance.translation = translation + Vector3(0, 1, 0)
 				#instance.rotate_z((7 * PI) / 4)
@@ -162,12 +177,30 @@ func _on_ItemFactor_ItemUsed(ID):
 				instance.connect("explode_toad_hit_player", self, "_on_ToadExplodeHit")
 				#TODO: Add curve path, add impuse when running
 				instance.apply_central_impulse(Vector3(vx * impulse, impulse, vz * impulse))
-			
+				$ThrowSound.play()
 			break
+	if ID == ItemFactory.ITEM.RED_VIAL:
+		health += 1
+		emit_signal("health_changed", health)
+		$DrinkSound.play()
+	elif ID == ItemFactory.ITEM.GREEN_VIAL:
+		speed = default_speed*1.3
+		$SpeedBoostTimer.start()
+		$DrinkSound.play()
+	elif ID == ItemFactory.ITEM.BLUE_VIAL:
+		print("Blue Vial")
+		emit_signal("start_enemy_pulse")
+		$DrinkSound.play()
 
 
 func _on_Main_game_end():
 	has_camera_control = false
 	
 func _on_ToadExplodeHit(): 
+	print("Boom")
 	_on_Enemy_hit_player()
+
+
+func _on_SpeedBoostTimer_timeout():
+	print("Timeout")
+	speed = default_speed

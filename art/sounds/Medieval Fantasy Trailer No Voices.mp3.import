@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Medieval Fantasy Trailer No Voices.mp3-1f18fc4c3d24084a2c4ac1aa4f990f5c.mp3str"
+
+[deps]
+
+source_file="res://art/sounds/Medieval Fantasy Trailer No Voices.mp3"
+dest_files=[ "res://.import/Medieval Fantasy Trailer No Voices.mp3-1f18fc4c3d24084a2c4ac1aa4f990f5c.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

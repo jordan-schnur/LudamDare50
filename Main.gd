@@ -13,13 +13,13 @@ export var angleInDeg = 45
 var enemy_spawned = false
 var game_started = false
 var score = 0
-var enemy_start_spawn: Vector3
-var player_start_spawn: Vector3
+var enemy_start_spawn = Vector3(0, 3, 11)
 
 func _ready():
 	print("Ready main")
-	enemy_start_spawn = $Enemy.translation
-	player_start_spawn = $Player.translation
+	
+	$StartingCameraPivot/Camera.make_current()
+	#enemy_start_spawn = to_global($Enemy.translation)
 
 
 func _on_Player_player_moved(old_position, new_position, old_rotation, new_rotation):
@@ -30,10 +30,11 @@ func _on_Player_player_moved(old_position, new_position, old_rotation, new_rotat
 	#$Camera.look_at_from_position(new_position + offset, new_position + Vector3(0, player_height, 0), Vector3.UP)
 
 func _input(event):
-	if event.is_action_pressed("ui_accept"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	if event.is_action_pressed("ui_cancel"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	if $Player.has_camera_control:
+		if event.is_action_pressed("ui_accept"):
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		if event.is_action_pressed("ui_cancel"):
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 func _on_EnemySpawnTimer_timeout():
 	emit_signal("enemy_spawned")
@@ -54,12 +55,19 @@ func _on_Control_start_game_please():
 	init_game()
 
 func _on_Control_restart_game_please():
-	print("Restart")
+	emit_signal("game_start")
 	init_game()
+
+func PickRandomPlayerPosition():
+	randomize()
+	return $PlayerSpawnLocations.get_child(rand_range(0, $PlayerSpawnLocations.get_child_count()-1)).translation + Vector3(0, 2, 0)
+		
 	
 func init_game():
-	#$Enemy.translation = enemy_start_spawn
-	$Player.translation = player_start_spawn
+	$Enemy.translation = enemy_start_spawn
+	$Enemy.show()
+	var playerSpawn = PickRandomPlayerPosition()
+	$Player.translation = playerSpawn
 	enemy_spawned = false
 	$Player.has_camera_control = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -76,4 +84,5 @@ func _on_Player_player_died():
 	$Enemy.current_state = $Enemy.STATE.PLAYER_DEAD
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	enemy_spawned = false
+	$StartingCameraPivot/Camera.make_current()
 	emit_signal("game_end")

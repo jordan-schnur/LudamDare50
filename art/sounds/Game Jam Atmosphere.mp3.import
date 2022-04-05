@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Game Jam Atmosphere.mp3-ec0e2dcbfe538b28c34acdbe29f4b503.mp3str"
+
+[deps]
+
+source_file="res://art/sounds/Game Jam Atmosphere.mp3"
+dest_files=[ "res://.import/Game Jam Atmosphere.mp3-ec0e2dcbfe538b28c34acdbe29f4b503.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

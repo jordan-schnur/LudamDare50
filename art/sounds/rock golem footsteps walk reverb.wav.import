@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/rock golem footsteps walk reverb.wav-da291d44d43943d1b0fb88451345fffc.sample"
+
+[deps]
+
+source_file="res://art/sounds/rock golem footsteps walk reverb.wav"
+dest_files=[ "res://.import/rock golem footsteps walk reverb.wav-da291d44d43943d1b0fb88451345fffc.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

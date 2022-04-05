@@ -1,16 +1,15 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://PlayerMesh.tscn" type="PackedScene" id=2]
 [ext_resource path="res://item_scenes/SharpStick.tscn" type="PackedScene" id=3]
+[ext_resource path="res://art/sounds/FootstepsGrassRunR PE289402.wav" type="AudioStream" id=4]
+[ext_resource path="res://art/sounds/Rope Throw .mp3" type="AudioStream" id=5]
+[ext_resource path="res://art/sounds/Drink Potion 8.mp3" type="AudioStream" id=6]
+[ext_resource path="res://default_env.tres" type="Environment" id=7]
 
 [sub_resource type="CapsuleShape" id=2]
 radius = 0.5
-
-[sub_resource type="Environment" id=5]
-ambient_light_color = Color( 0.105882, 0.105882, 0.105882, 1 )
-ambient_light_energy = 4.17
-fog_sun_color = Color( 0.411765, 0.411765, 0.411765, 1 )
 
 [sub_resource type="BoxShape" id=6]
 
@@ -27,7 +26,9 @@ shape = SubResource( 2 )
 [node name="CameraPivot" type="Spatial" parent="."]
 
 [node name="Camera" type="Camera" parent="CameraPivot"]
-environment = SubResource( 5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0122356, 0.0237408, -0.0125141 )
+environment = ExtResource( 7 )
+fov = 45.0
 
 [node name="Pivot" type="Spatial" parent="."]
 
@@ -39,8 +40,25 @@ environment = SubResource( 5 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.992255, 0 )
 shape = SubResource( 6 )
 
+[node name="SpeedBoostTimer" type="Timer" parent="."]
+wait_time = 8.0
+one_shot = true
+
+[node name="RunningSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = -25.345
+
+[node name="ThrowSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = -5.243
+
+[node name="DrinkSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -6.991
+
 [connection signal="movement_stopped" from="." to="Pivot/PlayerMesh" method="_on_Player_movement_stopped"]
 [connection signal="player_backward" from="." to="Pivot/PlayerMesh" method="_on_Player_player_backward"]
 [connection signal="player_forward" from="." to="Pivot/PlayerMesh" method="_on_Player_player_forward"]
 [connection signal="strafe_left" from="." to="Pivot/PlayerMesh" method="_on_Player_strafe_left"]
 [connection signal="strafe_right" from="." to="Pivot/PlayerMesh" method="_on_Player_strafe_right"]
+[connection signal="timeout" from="SpeedBoostTimer" to="." method="_on_SpeedBoostTimer_timeout"]

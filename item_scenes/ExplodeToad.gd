@@ -16,9 +16,11 @@ signal explode_toad_hit_player()
 
 
 func _on_ExplodeToadThrowable_body_entered(body):
-	if body.is_in_group("navmesh") or body.is_in_group("enemy"):
+	if body.is_in_group("map") or body.is_in_group("enemy"):
 		$DespawnTimer.start()
-		$CPUParticles.emitting = true
+		sleeping = true
+		$CPUParticles.start_me()
+		$AudioStreamPlayer3D.play()
 		for b in $Area.get_overlapping_bodies():
 			if b.is_in_group("enemy"):
 				emit_signal("explode_toad_hit_enemy")

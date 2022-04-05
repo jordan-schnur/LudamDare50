@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Craft Magic Item - Short Reverb.mp3-76198bbda0b7cc012a7b8270f4b356d2.mp3str"
+
+[deps]
+
+source_file="res://art/sounds/Craft Magic Item - Short Reverb.mp3"
+dest_files=[ "res://.import/Craft Magic Item - Short Reverb.mp3-76198bbda0b7cc012a7b8270f4b356d2.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
